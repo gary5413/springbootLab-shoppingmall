@@ -1,6 +1,7 @@
 package com.garylee.springbootlabshoppingmall.model;
 
 
+import com.garylee.springbootlabshoppingmall.constant.ProductCategory;
 import lombok.Data;
 
 import java.util.Date;
@@ -9,7 +10,9 @@ import java.util.Date;
 public class Product {
     private Integer productId;
     private String productName;
-    private String category;
+//    private String category;
+//  我們的分類是固定的且先定義好的 使用String類型 可能會又增加錯誤或非定義好的值  程式也會提升可讀性
+    private ProductCategory category;
     private String imageUrl;
     private Integer price;
     private Integer stock;

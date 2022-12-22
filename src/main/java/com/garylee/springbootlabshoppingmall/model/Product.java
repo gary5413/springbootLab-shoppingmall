@@ -17,6 +17,7 @@ public class Product {
     private Integer price;
     private Integer stock;
     private String description;
+//    Date類型預設使用 GMT+0
     private Date createdDate;
     private Date lastModifiedDate;
 }

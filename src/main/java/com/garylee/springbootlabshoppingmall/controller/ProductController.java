@@ -14,6 +14,7 @@ import javax.validation.Valid;
 public class ProductController {
     @Autowired
     private ProductService productService;
+//    查詢商品功能
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId){
         Product product = productService.getProductById(productId);
@@ -23,7 +24,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-/*
+/*  新增商品功能
     1. public ResponseEntity<Product> createProduct(Product product){
         不建議直接傳 Product類別 來新增 因為要決定前端傳來得值 並驗證
         另一種作法 會另外創一個類別來判斷
@@ -36,5 +37,19 @@ public class ProductController {
         Integer productId=productService.createProduct(productRequest);
         Product product=productService.getProductById(productId);
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
+    }
+//   修改商品功能
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
+                                                 @RequestBody @Valid ProductRequest productRequest){
+//        可以再修改 先檢查商品是否存在
+        Product product = productService.getProductById(productId);
+        if(product==null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+//        修改商品數據
+        productService.updateProduct(productId,productRequest);
+        Product updateProduct = productService.getProductById(productId);
+        return ResponseEntity.status(HttpStatus.OK).body(updateProduct);
     }
 }

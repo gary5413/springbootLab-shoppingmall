@@ -4,6 +4,7 @@ import com.garylee.springbootlabshoppingmall.constant.ProductCategory;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.util.Date;
 
 /*

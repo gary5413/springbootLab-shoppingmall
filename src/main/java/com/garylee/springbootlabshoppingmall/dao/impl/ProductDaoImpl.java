@@ -1,12 +1,17 @@
 package com.garylee.springbootlabshoppingmall.dao.impl;
 
 import com.garylee.springbootlabshoppingmall.dao.ProductDao;
+import com.garylee.springbootlabshoppingmall.dto.ProductRequest;
 import com.garylee.springbootlabshoppingmall.model.Product;
 import com.garylee.springbootlabshoppingmall.rowmapper.ProductRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,5 +37,29 @@ public class ProductDaoImpl implements ProductDao {
         }else{
             return null;
         }
+    }
+
+    @Override
+    public Integer createProduct(ProductRequest productRequest) {
+        String sql="INSERT INTO product (product_name, category, image_url, price, stock, " +
+                "description, created_date, last_modified_date) " +
+                "VALUES (:productName, :category,:imageUrl,:price,:stock,:description,:createdDate,:lastModifiedDate)";
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("productName",productRequest.getProductName());
+//        這裡要toString()
+        map.put("category",productRequest.getCategory().toString());
+        map.put("imageUrl",productRequest.getImageUrl());
+        map.put("price",productRequest.getPrice());
+        map.put("stock",productRequest.getStock());
+        map.put("description",productRequest.getDescription());
+//       紀錄當下時間 再設定進去
+        Date now = new Date();
+        map.put("createdDate",now);
+        map.put("lastModifiedDate",now);
+//        儲存資料自動生成的product id
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+        namedParameterJdbcTemplate.update(sql,new MapSqlParameterSource(map),keyHolder);
+        int productId = keyHolder.getKey().intValue();
+        return productId;
     }
 }

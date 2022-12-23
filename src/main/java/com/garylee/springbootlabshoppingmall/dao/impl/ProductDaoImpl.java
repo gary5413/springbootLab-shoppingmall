@@ -33,13 +33,14 @@ public class ProductDaoImpl implements ProductDao {
             WHERE 1=1 AND category = :category;
         2. 此為Spring JDBC 寫法
         3. Spring Data JPA or Hiberante 會幫你處理
-        4. %+ % 要加在 map那邊
+        4. % + xxx + % 要加在 map那邊
      */
 //    public List<Product> getProducts(ProductCategory category,String search) {
     public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql="SELECT product_id,product_name, category, image_url, price, stock, description, created_date," +
                 " last_modified_date FROM product WHERE 1=1";
         HashMap<String, Object> map = new HashMap<>();
+//        查詢條件
 //        if(category !=null){
         if(productQueryParams.getCategory() !=null){
             sql = sql+" AND category = :category";
@@ -52,8 +53,12 @@ public class ProductDaoImpl implements ProductDao {
 //            map.put("search","%"+search+"%");
             map.put("search","%"+productQueryParams.getSearch()+"%");
         }
+//        排序
         sql =sql + " ORDER BY "+productQueryParams.getOrderBy() +" "+productQueryParams.getSort();
-
+//        分頁
+        sql =sql + " LIMIT :limit OFFSET :offset";
+        map.put("limit",productQueryParams.getLimit());
+        map.put("offset",productQueryParams.getOffset());
         List<Product> productList=namedParameterJdbcTemplate.query(sql,map,new ProductRowMapper());
         return productList;
     }

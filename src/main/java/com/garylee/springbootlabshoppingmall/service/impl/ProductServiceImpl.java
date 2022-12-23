@@ -2,6 +2,7 @@ package com.garylee.springbootlabshoppingmall.service.impl;
 
 import com.garylee.springbootlabshoppingmall.constant.ProductCategory;
 import com.garylee.springbootlabshoppingmall.dao.ProductDao;
+import com.garylee.springbootlabshoppingmall.dto.ProductQueryParams;
 import com.garylee.springbootlabshoppingmall.dto.ProductRequest;
 import com.garylee.springbootlabshoppingmall.model.Product;
 import com.garylee.springbootlabshoppingmall.service.ProductService;
@@ -15,11 +16,14 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductDao productDao;
-
     @Override
-    public List<Product> getProducts(ProductCategory category,String search) {
-        return productDao.getProducts(category,search);
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
+        return productDao.getProducts(productQueryParams);
     }
+//    @Override
+//    public List<Product> getProducts(ProductCategory category,String search) {
+//        return productDao.getProducts(category,search);
+//    }
 
     @Override
     public Product getProductById(Integer productId) {

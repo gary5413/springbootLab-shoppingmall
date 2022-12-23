@@ -2,6 +2,7 @@ package com.garylee.springbootlabshoppingmall.dao.impl;
 
 import com.garylee.springbootlabshoppingmall.constant.ProductCategory;
 import com.garylee.springbootlabshoppingmall.dao.ProductDao;
+import com.garylee.springbootlabshoppingmall.dto.ProductQueryParams;
 import com.garylee.springbootlabshoppingmall.dto.ProductRequest;
 import com.garylee.springbootlabshoppingmall.model.Product;
 import com.garylee.springbootlabshoppingmall.rowmapper.ProductRowMapper;
@@ -34,17 +35,22 @@ public class ProductDaoImpl implements ProductDao {
         3. Spring Data JPA or Hiberante 會幫你處理
         4. %+ % 要加在 map那邊
      */
-    public List<Product> getProducts(ProductCategory category,String search) {
+//    public List<Product> getProducts(ProductCategory category,String search) {
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql="SELECT product_id,product_name, category, image_url, price, stock, description, created_date," +
                 " last_modified_date FROM product WHERE 1=1";
         HashMap<String, Object> map = new HashMap<>();
-        if(category !=null){
+//        if(category !=null){
+        if(productQueryParams.getCategory() !=null){
             sql = sql+" AND category = :category";
-            map.put("category",category.name());
+//            map.put("category",category.name());
+            map.put("category",productQueryParams.getCategory().name());
         }
-        if(search !=null){
+//        if(search !=null){
+        if(productQueryParams.getSearch() !=null){
             sql =sql +" AND product_name LIKE :search";
-            map.put("search","%"+search+"%");
+//            map.put("search","%"+search+"%");
+            map.put("search","%"+productQueryParams.getSearch()+"%");
         }
         List<Product> productList=namedParameterJdbcTemplate.query(sql,map,new ProductRowMapper());
         return productList;

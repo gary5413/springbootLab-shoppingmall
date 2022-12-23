@@ -1,6 +1,7 @@
 package com.garylee.springbootlabshoppingmall.controller;
 
 import com.garylee.springbootlabshoppingmall.constant.ProductCategory;
+import com.garylee.springbootlabshoppingmall.dto.ProductQueryParams;
 import com.garylee.springbootlabshoppingmall.dto.ProductRequest;
 import com.garylee.springbootlabshoppingmall.model.Product;
 import com.garylee.springbootlabshoppingmall.service.ProductService;
@@ -22,15 +23,26 @@ public class ProductController {
         2. 查詢條件商品
             @RequestParam(required = false) ProductCategory category
      */
-
+//    加強改善傳遞參數 另外創一個類別
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search
     ){
-        List<Product> productList=productService.getProducts(category,search);
+        ProductQueryParams productQueryParams = new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
+        List<Product> productList=productService.getProducts(productQueryParams);
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
+//    @GetMapping("/products")
+//    public ResponseEntity<List<Product>> getProducts(
+//            @RequestParam(required = false) ProductCategory category,
+//            @RequestParam(required = false) String search
+//    ){
+//        List<Product> productList=productService.getProducts(category,search);
+//        return ResponseEntity.status(HttpStatus.OK).body(productList);
+//    }
 //    查詢商品Id
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId){

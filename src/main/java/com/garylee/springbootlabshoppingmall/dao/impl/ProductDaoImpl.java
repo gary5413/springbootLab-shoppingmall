@@ -24,6 +24,16 @@ Spring Data JDBC寫法
 public class ProductDaoImpl implements ProductDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Override
+    public List<Product> getProducts() {
+        String sql="SELECT product_id,product_name, category, image_url, price, stock, description, created_date," +
+                " last_modified_date FROM product";
+        HashMap<String, Object> map = new HashMap<>();
+        List<Product> productList=namedParameterJdbcTemplate.query(sql,map,new ProductRowMapper());
+        return productList;
+    }
+
     @Override
     public Product getProductById(Integer productId) {
 //        注意:productId 是參數 而非欄位

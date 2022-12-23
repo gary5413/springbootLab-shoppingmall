@@ -21,17 +21,25 @@ public class ProductController {
       查詢商品功能
         1. 查詢商品全部
         2. 查詢條件商品
-            @RequestParam(required = false) ProductCategory category
+            @RequestParam(required = false) ProductCategory category 非必需參數
+        3. 加強改善傳遞參數 另外創一個類別來控管傳遞參數
+        4. 新增排序 orderBy 通常預設會是最新商品 (defaultValue = "created_date")
+        5. 新增排序 sort 升序 降序
      */
-//    加強改善傳遞參數 另外創一個類別
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProducts(
+//          查詢條件 Filtering
             @RequestParam(required = false) ProductCategory category,
-            @RequestParam(required = false) String search
+            @RequestParam(required = false) String search,
+//           排序 Sorting
+            @RequestParam(defaultValue = "created_date") String orderBy,
+            @RequestParam(defaultValue = "desc") String sort
     ){
         ProductQueryParams productQueryParams = new ProductQueryParams();
         productQueryParams.setCategory(category);
         productQueryParams.setSearch(search);
+        productQueryParams.setOrderBy(orderBy);
+        productQueryParams.setSort(sort);
         List<Product> productList=productService.getProducts(productQueryParams);
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }

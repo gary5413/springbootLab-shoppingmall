@@ -5,6 +5,8 @@ import lombok.Data;
 
 @Data
 public class ProductQueryParams {
-    ProductCategory category;
-    String search;
+    private ProductCategory category;
+    private String search;
+    private String orderBy;
+    private String sort;
 }

@@ -1,5 +1,6 @@
 package com.garylee.springbootlabshoppingmall.controller;
 
+import com.garylee.springbootlabshoppingmall.constant.ProductCategory;
 import com.garylee.springbootlabshoppingmall.dto.ProductRequest;
 import com.garylee.springbootlabshoppingmall.model.Product;
 import com.garylee.springbootlabshoppingmall.service.ProductService;
@@ -15,11 +16,19 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductService productService;
-//    查詢商品功能
-//    查詢商品全部
+    /*
+      查詢商品功能
+        1. 查詢商品全部
+        2. 查詢條件商品
+            @RequestParam(required = false) ProductCategory category
+     */
+
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(){
-        List<Product> productList=productService.getProducts();
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam(required = false) ProductCategory category,
+            @RequestParam(required = false) String search
+    ){
+        List<Product> productList=productService.getProducts(category,search);
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
 //    查詢商品Id

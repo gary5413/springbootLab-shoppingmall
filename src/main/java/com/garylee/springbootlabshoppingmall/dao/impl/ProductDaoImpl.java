@@ -1,5 +1,6 @@
 package com.garylee.springbootlabshoppingmall.dao.impl;
 
+import com.garylee.springbootlabshoppingmall.constant.ProductCategory;
 import com.garylee.springbootlabshoppingmall.dao.ProductDao;
 import com.garylee.springbootlabshoppingmall.dto.ProductRequest;
 import com.garylee.springbootlabshoppingmall.model.Product;
@@ -24,15 +25,38 @@ Spring Data JDBC寫法
 public class ProductDaoImpl implements ProductDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
     @Override
-    public List<Product> getProducts() {
+    /*
+        1. sql 加入 WHERE 1=1 對查詢結果不會有任何影響 因為想要讓查詢條件自由的拼接
+            加入 AND 可以自由加入條件 注意AND前面要空格
+            WHERE 1=1 AND category = :category;
+        2. 此為Spring JDBC 寫法
+        3. Spring Data JPA or Hiberante 會幫你處理
+        4. %+ % 要加在 map那邊
+     */
+    public List<Product> getProducts(ProductCategory category,String search) {
         String sql="SELECT product_id,product_name, category, image_url, price, stock, description, created_date," +
-                " last_modified_date FROM product";
+                " last_modified_date FROM product WHERE 1=1";
         HashMap<String, Object> map = new HashMap<>();
+        if(category !=null){
+            sql = sql+" AND category = :category";
+            map.put("category",category.name());
+        }
+        if(search !=null){
+            sql =sql +" AND product_name LIKE :search";
+            map.put("search","%"+search+"%");
+        }
         List<Product> productList=namedParameterJdbcTemplate.query(sql,map,new ProductRowMapper());
         return productList;
     }
+//    @Override
+//    public List<Product> getProducts() {
+//        String sql="SELECT product_id,product_name, category, image_url, price, stock, description, created_date," +
+//                " last_modified_date FROM product";
+//        HashMap<String, Object> map = new HashMap<>();
+//        List<Product> productList=namedParameterJdbcTemplate.query(sql,map,new ProductRowMapper());
+//        return productList;
+//    }
 
     @Override
     public Product getProductById(Integer productId) {

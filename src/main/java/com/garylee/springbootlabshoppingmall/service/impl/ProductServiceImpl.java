@@ -1,5 +1,6 @@
 package com.garylee.springbootlabshoppingmall.service.impl;
 
+import com.garylee.springbootlabshoppingmall.constant.ProductCategory;
 import com.garylee.springbootlabshoppingmall.dao.ProductDao;
 import com.garylee.springbootlabshoppingmall.dto.ProductRequest;
 import com.garylee.springbootlabshoppingmall.model.Product;
@@ -16,8 +17,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductDao productDao;
 
     @Override
-    public List<Product> getProducts() {
-        return productDao.getProducts();
+    public List<Product> getProducts(ProductCategory category,String search) {
+        return productDao.getProducts(category,search);
     }
 
     @Override

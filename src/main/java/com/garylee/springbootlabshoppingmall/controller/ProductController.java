@@ -5,6 +5,7 @@ import com.garylee.springbootlabshoppingmall.dto.ProductQueryParams;
 import com.garylee.springbootlabshoppingmall.dto.ProductRequest;
 import com.garylee.springbootlabshoppingmall.model.Product;
 import com.garylee.springbootlabshoppingmall.service.ProductService;
+import com.garylee.springbootlabshoppingmall.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,10 +32,12 @@ public class ProductController {
         5. 新增分頁
             - limit - offset
             @Max @Min 要再類別加上@Validated 才會生效
+        6. 回傳List 改回傳 JSON
      */
     @Validated
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(
+//    public ResponseEntity<List<Product>> getProducts(
+    public ResponseEntity<Page<Product>> getProducts(
 //          查詢條件 Filtering
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search,
@@ -53,7 +56,16 @@ public class ProductController {
         productQueryParams.setLimit(limit);
         productQueryParams.setOffset(offset);
         List<Product> productList=productService.getProducts(productQueryParams);
-        return ResponseEntity.status(HttpStatus.OK).body(productList);
+//      取得總筆數
+        Integer total =productService.countProduct(productQueryParams);
+//      分頁的另一種寫法
+        Page<Product> page=new Page<>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total);
+        page.setResults(productList);
+//        return ResponseEntity.status(HttpStatus.OK).body(productList);
+        return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 //    @GetMapping("/products")
 //    public ResponseEntity<List<Product>> getProducts(

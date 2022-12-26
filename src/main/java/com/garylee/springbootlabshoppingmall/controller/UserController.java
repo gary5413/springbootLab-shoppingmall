@@ -1,5 +1,6 @@
 package com.garylee.springbootlabshoppingmall.controller;
 
+import com.garylee.springbootlabshoppingmall.dto.UserLoginRequest;
 import com.garylee.springbootlabshoppingmall.dto.UserRegisterRequest;
 import com.garylee.springbootlabshoppingmall.model.User;
 import com.garylee.springbootlabshoppingmall.service.UserService;
@@ -20,5 +21,10 @@ public class UserController {
         Integer userId=userService.register(userRegisterRequest);
         User user=userService.getUserById(userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+    @PostMapping("/users/login")
+    public ResponseEntity<User> login(@RequestBody @Validated UserLoginRequest userLoginRequest){
+        User user=userService.login(userLoginRequest);
+        return  ResponseEntity.status(HttpStatus.OK).body(user);
     }
 }

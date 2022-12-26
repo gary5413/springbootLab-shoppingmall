@@ -1,9 +1,11 @@
 package com.garylee.springbootlabshoppingmall.service;
 
+import com.garylee.springbootlabshoppingmall.dto.UserLoginRequest;
 import com.garylee.springbootlabshoppingmall.dto.UserRegisterRequest;
 import com.garylee.springbootlabshoppingmall.model.User;
 
 public interface UserService {
     Integer register(UserRegisterRequest userRegisterRequest);
     User getUserById(Integer userId);
+    User login(UserLoginRequest userLoginRequest);
 }

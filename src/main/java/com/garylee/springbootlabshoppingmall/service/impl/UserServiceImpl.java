@@ -1,6 +1,7 @@
 package com.garylee.springbootlabshoppingmall.service.impl;
 
 import com.garylee.springbootlabshoppingmall.dao.UserDao;
+import com.garylee.springbootlabshoppingmall.dto.UserLoginRequest;
 import com.garylee.springbootlabshoppingmall.dto.UserRegisterRequest;
 import com.garylee.springbootlabshoppingmall.model.User;
 import com.garylee.springbootlabshoppingmall.service.UserService;
@@ -32,5 +33,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Integer userId) {
         return userDao.getUserById(userId);
+    }
+
+    @Override
+    public User login(UserLoginRequest userLoginRequest) {
+        User user=userDao.getUserByEmail(userLoginRequest.getEmail());
+        if(user ==null){
+            log.warn("該Email:{}尚未被註冊",userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        if(user.getPassword().equals(userLoginRequest.getPassword())){
+            return user;
+        }else{
+            log.warn("email:{}的密碼不正確",userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 }

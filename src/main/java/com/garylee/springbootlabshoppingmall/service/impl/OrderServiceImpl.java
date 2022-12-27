@@ -4,6 +4,7 @@ import com.garylee.springbootlabshoppingmall.dao.OrderDao;
 import com.garylee.springbootlabshoppingmall.dao.ProductDao;
 import com.garylee.springbootlabshoppingmall.dto.BuyItem;
 import com.garylee.springbootlabshoppingmall.dto.CreateOrderRequest;
+import com.garylee.springbootlabshoppingmall.model.Order;
 import com.garylee.springbootlabshoppingmall.model.OrderItem;
 import com.garylee.springbootlabshoppingmall.model.Product;
 import com.garylee.springbootlabshoppingmall.service.OrderService;
@@ -44,5 +45,13 @@ public class OrderServiceImpl implements OrderService {
 
         orderDao.createOrderItems(orderId,orderItemList);
         return orderId;
+    }
+
+    @Override
+    public Order getOrderById(Integer orderId) {
+        Order order=orderDao.getOrderById(orderId);
+        List<OrderItem> orderItemList=orderDao.getOrderItemsByOrderId(orderId);
+        order.setOrderItemList(orderItemList);
+        return order;
     }
 }

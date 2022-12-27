@@ -1,6 +1,7 @@
 package com.garylee.springbootlabshoppingmall.controller;
 
 import com.garylee.springbootlabshoppingmall.dto.CreateOrderRequest;
+import com.garylee.springbootlabshoppingmall.model.Order;
 import com.garylee.springbootlabshoppingmall.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,8 @@ public class OrderController {
     public ResponseEntity<?> createOrder(@PathVariable Integer userId,
                                          @RequestBody @Validated CreateOrderRequest createOrderRequest){
         Integer orderId=orderService.createOrder(userId,createOrderRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderId);
+        Order order=orderService.getOrderById(orderId);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(orderId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
 }

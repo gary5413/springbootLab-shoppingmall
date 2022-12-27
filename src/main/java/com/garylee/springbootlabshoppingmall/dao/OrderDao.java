@@ -1,5 +1,6 @@
 package com.garylee.springbootlabshoppingmall.dao;
 
+import com.garylee.springbootlabshoppingmall.dto.OrderQueryParams;
 import com.garylee.springbootlabshoppingmall.model.Order;
 import com.garylee.springbootlabshoppingmall.model.OrderItem;
 import org.aspectj.weaver.ast.Or;
@@ -11,4 +12,6 @@ public interface OrderDao {
     void createOrderItems(Integer orderId, List<OrderItem> orderItemList);
     Order getOrderById(Integer orderId);
     List<OrderItem> getOrderItemsByOrderId(Integer orderId);
+    List<Order> getOrders(OrderQueryParams orderQueryParams);
+    Integer countOrder(OrderQueryParams orderQueryParams);
 }

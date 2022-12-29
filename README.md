@@ -2,6 +2,8 @@
 practice springboot shopping mall website 
 
 #### 練習SpringBoot 實作 shopping mall website
+SpringBoot 
+底層Dao實作為SpringJDBC 寫法
 
 ### 電商網站實作內容
 - 商品功能
